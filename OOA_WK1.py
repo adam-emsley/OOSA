@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[17]:
+# In[99]:
 
 
 #importing packages required:
@@ -24,7 +24,7 @@ def minimum(sequence=[], no=10, start=0, stop=1):
     - example usage: m, array = minimum(no=100, start=0, stop=100)
     ---------------------------------------------------------------------------------
     """
-    
+
     if len(sequence) == 0:
         array = np.random.uniform(start, stop, size=(no,)) #random floats
     else:
@@ -50,26 +50,25 @@ def sorting(sort=[]):
     
     - user input must be an array
     
-    - returns sorted array
+    - returns sorted array and unsorted array
     ---------------------------------------------------------------------------------
     """
-    
-    m, arr = minimum(sequence = sort)
-    arr2 = arr.copy()
-    empty = np.array([0]*len(arr))
-    i = 0
-    
-    while i < len(arr2):
-        
-        if len(arr[arr==m]) == 1:
-            empty[i] = m
-        else:
-            empty[i:i+len(arr[arr==m])] = m
-        
-        i = i+len(arr[arr==m])
-        cut = arr[arr != m]
-        m, arr = minimum(sequence = cut)
-        
 
-    return empty
+    m, arr = minimum(sequence = sort) #minimum of our sequence and the sequence itself
+    arr2 = arr.copy() #copy of our sequence for knowing length
+    empty = [] #empty list in whichn we can append minima
+    i = 0 #dummy index used as counter
+    
+    while i < len(arr2): #we loop through the length of our array
+    
+        count = len(arr[arr==m]) #if repeated numbers in list, we must append that number of times
+        while count > 0:
+            empty.append(m)
+            count = count -1
+        
+        i = i+len(arr[arr==m]) #adding to dummy i how many minima we have of given number
+        cut = arr[arr != m]    #we do not care about the minima we remove, so chop our array
+        m, arr = minimum(sequence = np.array(cut)) #find minima of new chopped array, and carry on while loop
+
+    return empty, arr2
 
